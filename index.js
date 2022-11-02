@@ -156,7 +156,7 @@ class Invader {
         image.src = './img/invader.png'
         image.onload = () => {
             if( canvas.width < 500 || canvas.height < 900){
-                this.scale = 2
+                this.scale = 2.5
 
             }else{
                 this.scale = 1.5
