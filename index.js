@@ -4,6 +4,8 @@ const c = canvas.getContext('2d')
 
 canvas.width = innerWidth
 canvas.height = innerHeight
+console.log(canvas.width)
+console.log(canvas.height)
 
 class Player {
     constructor() {
@@ -21,14 +23,21 @@ class Player {
         const image = new Image()
         image.src = './img/spaceship.png'
         image.onload = () => {
-            const scale = 0.15
+            if( canvas.width < 500 || canvas.height < 900){
+                this.scale = 0.75
+
+            }else{
+                this.scale = 0.5
+            }
+            console.log("player scale", this.scale)
+            
             this.image = image
-            this.width = image.width * scale
-            this.height = image.height * scale
+            this.width = image.width * this.scale
+            this.height = image.height * this.scale
 
             this.position = {
                 x: canvas.width / 2 - this.width / 2,
-                y: canvas.height - 50,
+                y: canvas.height - this.height,
             }
         }
 
@@ -146,10 +155,16 @@ class Invader {
         const image = new Image()
         image.src = './img/invader.png'
         image.onload = () => {
-            const scale = 1
+            if( canvas.width < 500 || canvas.height < 900){
+                this.scale = 2
+
+            }else{
+                this.scale = 1.5
+            }
+            console.log("invader scale", this.scale)
             this.image = image
-            this.width = image.width * scale
-            this.height = image.height * scale
+            this.width = image.width * this.scale
+            this.height = image.height * this.scale
 
             this.position = {
                 x: position.x,
@@ -206,13 +221,13 @@ class Grid {
         const columns = Math.floor(Math.random() * 10 + 5)
         const rows = Math.floor(Math.random() * 5 + 2)
 
-        this.width = columns * 30
+        this.width = columns * 60
 
         for ( let x = 0; x < columns; x++) {
             for ( let y = 0; y < rows; y++){
                 this.invaders.push(new Invader({position: {
-                    x: x * 30 ,
-                    y: y * 30
+                    x: x * 60 ,
+                    y: y * 40
                 }
             }
             ))}
