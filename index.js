@@ -71,14 +71,23 @@ class Projectile {
         this.position = position
         this.velocity = velocity
 
-        this.radius = 3
+        this.radius = 1
+        this.width = 10
+        this.height = 20
     }
 
     draw() {
         c.beginPath()
+        
         c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2)
-        c.fillStyle = 'red'
+        c.fillStyle = '#3A3184'
+        c.fillRect(this.position.x , this.position.y , this.width , this.height );
+        c.fillStyle = "white"
+        c.fillRect(this.position.x , this.position.y , this.width / 2 , this.height / 2 );
+
+
         c.fill()
+        
         c.closePath()
     }
 
@@ -153,7 +162,7 @@ class Invader {
         }
          
         const image = new Image()
-        image.src = './img/invader.png'
+        image.src = './img/Attack6.png'
         image.onload = () => {
             if( canvas.width < 500 || canvas.height < 900){
                 this.scale = 2.5
@@ -163,8 +172,8 @@ class Invader {
             }
             console.log("invader scale", this.scale)
             this.image = image
-            this.width = image.width * this.scale
-            this.height = image.height * this.scale
+            this.width = 30
+            this.height = 60
 
             this.position = {
                 x: position.x,
@@ -423,16 +432,7 @@ addEventListener('keydown', ({ key }) => {
             break
         case ' ':
             console.log()
-            projectiles.push(new Projectile({
-                position: {
-                    x: player.position.x + player.width / 2,
-                    y: player.position.y
-                },
-                velocity: {
-                    x: 0,
-                    y: -10
-                }
-            }))
+
             break
     }
 })
@@ -452,6 +452,16 @@ addEventListener('keyup', ({ key }) => {
             break
         case ' ':
             console.log("shot")
+            projectiles.push(new Projectile({
+                position: {
+                    x: player.position.x + player.width / 2,
+                    y: player.position.y
+                },
+                velocity: {
+                    x: 0,
+                    y: -10
+                }
+            }))
             break
     }
 })
@@ -480,6 +490,19 @@ document.addEventListener("touchend", e => {
 
 const shootButton = document.getElementById('shoot-button');
 shootButton.addEventListener('touchstart', e => {
+    projectiles.push(new Projectile({
+        position: {
+            x: player.position.x + player.width / 2,
+            y: player.position.y
+        },
+        velocity: {
+            x: 0,
+            y: -10
+        }
+    }))
+});
+
+shootButton.addEventListener('mouseup', e => {
     projectiles.push(new Projectile({
         position: {
             x: player.position.x + player.width / 2,
