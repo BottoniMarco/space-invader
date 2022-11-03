@@ -455,3 +455,40 @@ addEventListener('keyup', ({ key }) => {
             break
     }
 })
+
+document.addEventListener("touchstart", e => {
+    const point = e.changedTouches[0].clientX
+    console.log("point", point)
+    if(point <= canvas.width / 2){
+        keys.a.pressed = true
+    }else{
+        keys.d.pressed = true
+        
+    }
+})
+
+document.addEventListener("touchend", e => {
+    const point = e.changedTouches[0].clientX
+    console.log("point", point)
+    if(point <= canvas.width / 2){
+        keys.a.pressed = false
+    }else{
+        keys.d.pressed = false
+        
+    }
+})
+
+const shootButton = document.getElementById('shoot-button');
+shootButton.addEventListener('touchstart', e => {
+    projectiles.push(new Projectile({
+        position: {
+            x: player.position.x + player.width / 2,
+            y: player.position.y
+        },
+        velocity: {
+            x: 0,
+            y: -10
+        }
+    }))
+});
+
