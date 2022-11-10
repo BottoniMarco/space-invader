@@ -1,11 +1,14 @@
 const scoreEl = document.querySelector('#scoreEl')
+const scoreGM = document.querySelector('#scoreGM')
+const gameover = document.querySelector('#gameover')
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
-
+console.log(window.location)
 canvas.width = innerWidth
 canvas.height = innerHeight
 console.log(canvas.width)
 console.log(canvas.height)
+gameover.style.display = "none";
 
 class Player {
     constructor() {
@@ -72,18 +75,29 @@ class Projectile {
         this.velocity = velocity
 
         this.radius = 1
-        this.width = 10
-        this.height = 20
+
+        const image = new Image()
+        image.src = './img/rdf.jpg'
+        image.onload = () => {
+
+            this.image = image
+            this.width = 20
+            this.height = 40
+
+            this.position = {
+                x: position.x,
+                y: position.y,
+            }
+        }
     }
 
     draw() {
+        c.drawImage(this.image, this.position.x - this.width / 2, this.position.y, this.width, this.height)      
+
         c.beginPath()
-        
         c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2)
         c.fillStyle = '#3A3184'
-        c.fillRect(this.position.x , this.position.y , this.width , this.height );
-        c.fillStyle = "white"
-        c.fillRect(this.position.x , this.position.y , this.width / 2 , this.height / 2 );
+
 
 
         c.fill()
@@ -92,9 +106,11 @@ class Projectile {
     }
 
     update() {
-        this.draw()
-        this.position.x += this.velocity.x
-        this.position.y += this.velocity.y
+        if (this.image) {
+            this.draw()
+            this.position.x += this.velocity.x
+            this.position.y += this.velocity.y
+        }
     }
 }
 
@@ -335,6 +351,15 @@ function animate() {
                 object: player,
                 color: 'red'  
             })
+
+            gameover.style.display = "block";
+            
+            
+            // var menu = window.location.origin + "/pvtprj/space_invaders/menu.html"
+            // console.log("go to menu", menu)
+            // window.location.href = menu;
+             
+            
             console.log("you lose")
         }
         
@@ -371,6 +396,7 @@ function animate() {
                         if (invaderFound && projectileFound) {
                             score += 10
                             scoreEl.innerHTML = score
+                            scoreGM.innerHTML = score
                             console.log("score",score)
                             createParticles({
                                 object: invader,  
@@ -420,6 +446,8 @@ function animate() {
 
 animate()
 
+
+
 addEventListener('keydown', ({ key }) => {
     if (game.over) return
 
@@ -466,7 +494,10 @@ addEventListener('keyup', ({ key }) => {
     }
 })
 
-document.addEventListener("touchstart", e => {
+
+
+
+canvas.addEventListener("touchstart", e => {
     const point = e.changedTouches[0].clientX
     console.log("point", point)
     if(point <= canvas.width / 2){
@@ -477,7 +508,7 @@ document.addEventListener("touchstart", e => {
     }
 })
 
-document.addEventListener("touchend", e => {
+canvas.addEventListener("touchend", e => {
     const point = e.changedTouches[0].clientX
     console.log("point", point)
     if(point <= canvas.width / 2){
@@ -490,6 +521,7 @@ document.addEventListener("touchend", e => {
 
 const shootButton = document.getElementById('shoot-button');
 shootButton.addEventListener('touchstart', e => {
+    keys.d.pressed = true;
     projectiles.push(new Projectile({
         position: {
             x: player.position.x + player.width / 2,
@@ -500,6 +532,7 @@ shootButton.addEventListener('touchstart', e => {
             y: -10
         }
     }))
+    keys.d.pressed = false
 });
 
 shootButton.addEventListener('mouseup', e => {
