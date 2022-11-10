@@ -455,9 +455,19 @@ addEventListener('keydown', ({ key }) => {
         case 'a':
             keys.a.pressed = true
             break
+
+        case 'A':
+        keys.a.pressed = true
+        break
+
         case 'd':
             keys.d.pressed = true
             break
+
+        case 'D':
+            keys.d.pressed = true
+            break
+
         case ' ':
             console.log()
 
@@ -474,10 +484,23 @@ addEventListener('keyup', ({ key }) => {
             player.velocity.x = -5 
             keys.a.pressed = false
             break
+        
+        case 'A':
+            console.log("left")
+            player.velocity.x = -5 
+            keys.a.pressed = false
+            break    
+
         case 'd':
             console.log("right")
             keys.d.pressed = false
             break
+
+        case 'D':
+            console.log("right")
+            keys.d.pressed = false
+            break
+
         case ' ':
             console.log("shot")
             projectiles.push(new Projectile({
